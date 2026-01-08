@@ -1,11 +1,14 @@
 # Copilot Working Group Workshops
 
-Getting started:
-
-- Run `npm install`
-- Run `npm run dev`
-
 This repository hosts hands-on workshops to learn and practice GitHub Copilot—using Copilot Chat in the GitHub UI, Copilot in VSCode, and custom agents.
+
+## Getting started:
+
+- Fork this repo to your own account
+- Enable worklows to run by clicking on "actions" on your forked repo and clicking the green "I understand..." button
+  ![Image of github actions](assets/images/enable_actions.png)
+- Go to your forked repo settings -> General and scroll down and tick "Issues" in the "Features" section
+  ![Image of github settings](assets/images/enable_issues.png)
 
 ## Useful links
 
