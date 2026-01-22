@@ -1,0 +1,8 @@
+version: "1"
+
+setup:
+  - run: npm ci
+    description: "Install project dependencies with npm ci"
+
+  - run: npm run build
+    description: "Build the application to verify it compiles successfully"
