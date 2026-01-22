@@ -289,11 +289,9 @@ describe('ProductDetail Component - Behavior Tests', () => {
    */
   it('should handle product with missing optional fields (brand fallback)', () => {
     // Arrange: Create a product without optional brand field
-    const productWithoutBrand: Product = {
-      ...mockProduct,
-      brand: undefined,
-    };
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { brand: _brand, ...productWithoutBrand } = mockProduct;
+    
     vi.mocked(useProduct).mockReturnValue(
       createMockUseProductResult({
         data: productWithoutBrand,

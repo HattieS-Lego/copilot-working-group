@@ -32,6 +32,7 @@ export function renderWithProviders(
   };
 }
 
-// Re-export commonly used testing utilities individually instead of using export *
-export { screen, waitFor, within, fireEvent } from '@testing-library/react';
+// Re-export commonly used testing utilities individually
+// Note: userEvent is preferred over fireEvent for user interactions
+export { screen, waitFor, within } from '@testing-library/react';
 export { default as userEvent } from '@testing-library/user-event';
