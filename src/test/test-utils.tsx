@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, RenderOptions } from '@testing-library/react';
+import { render, type RenderOptions } from '@testing-library/react';
 import { CartProvider } from '../contexts/CartContext';
 
 // Create a custom render function that includes all necessary providers
@@ -32,5 +32,6 @@ export function renderWithProviders(
   };
 }
 
-export * from '@testing-library/react';
-export { renderWithProviders as render };
+// Re-export commonly used testing utilities individually instead of using export *
+export { screen, waitFor, within, fireEvent } from '@testing-library/react';
+export { default as userEvent } from '@testing-library/user-event';

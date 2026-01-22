@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import type { UseQueryResult } from '@tanstack/react-query';
 import { renderWithProviders } from '../../test/test-utils';
 import { ProductDetail } from './index';
 import { useProduct } from '../../hooks/useProduct';
@@ -96,6 +97,37 @@ const mockProduct: Product = {
   images: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
 };
 
+// Helper function to create a properly typed mock UseQueryResult
+const createMockUseProductResult = (
+  overrides: Partial<UseQueryResult<Product, Error>>
+): UseQueryResult<Product, Error> => {
+  return {
+    data: undefined,
+    isLoading: false,
+    isError: false,
+    error: null,
+    isSuccess: false,
+    status: 'pending',
+    fetchStatus: 'idle',
+    isFetching: false,
+    isRefetching: false,
+    isPending: false,
+    isLoadingError: false,
+    isRefetchError: false,
+    dataUpdatedAt: 0,
+    errorUpdatedAt: 0,
+    failureCount: 0,
+    failureReason: null,
+    errorUpdateCount: 0,
+    isFetched: false,
+    isFetchedAfterMount: false,
+    isPlaceholderData: false,
+    isStale: false,
+    refetch: vi.fn(),
+    ...overrides,
+  } as UseQueryResult<Product, Error>;
+};
+
 describe('ProductDetail Component - Behavior Tests', () => {
   const mockAddToCart = vi.fn();
 
@@ -121,13 +153,13 @@ describe('ProductDetail Component - Behavior Tests', () => {
    */
   it('should render product information (title, price, description) when provided with product data', () => {
     // Arrange: Mock the useProduct hook to return valid product data
-    vi.mocked(useProduct).mockReturnValue({
-      data: mockProduct,
-      isLoading: false,
-      error: null,
-      isError: false,
-      isSuccess: true,
-    } as any);
+    vi.mocked(useProduct).mockReturnValue(
+      createMockUseProductResult({
+        data: mockProduct,
+        isLoading: false,
+        isSuccess: true,
+      })
+    );
 
     // Act: Render the ProductDetail component
     renderWithProviders(<ProductDetail />);
@@ -158,13 +190,13 @@ describe('ProductDetail Component - Behavior Tests', () => {
    */
   it('should handle missing product data gracefully (no product data available)', () => {
     // Arrange: Mock the useProduct hook to return no product data
-    vi.mocked(useProduct).mockReturnValue({
-      data: undefined,
-      isLoading: false,
-      error: null,
-      isError: false,
-      isSuccess: false,
-    } as any);
+    vi.mocked(useProduct).mockReturnValue(
+      createMockUseProductResult({
+        data: undefined,
+        isLoading: false,
+        isSuccess: false,
+      })
+    );
 
     // Act: Render the ProductDetail component
     renderWithProviders(<ProductDetail />);
@@ -188,13 +220,13 @@ describe('ProductDetail Component - Behavior Tests', () => {
   it('should correctly handle add-to-cart action (calls appropriate handler)', async () => {
     // Arrange: Set up user interaction utilities and mock product data
     const user = userEvent.setup();
-    vi.mocked(useProduct).mockReturnValue({
-      data: mockProduct,
-      isLoading: false,
-      error: null,
-      isError: false,
-      isSuccess: true,
-    } as any);
+    vi.mocked(useProduct).mockReturnValue(
+      createMockUseProductResult({
+        data: mockProduct,
+        isLoading: false,
+        isSuccess: true,
+      })
+    );
 
     // Act: Render the component and click the "Add to Cart" button
     renderWithProviders(<ProductDetail />);
@@ -224,13 +256,13 @@ describe('ProductDetail Component - Behavior Tests', () => {
    */
   it('should handle loading state appropriately (while fetching product data)', () => {
     // Arrange: Mock the useProduct hook to return loading state
-    vi.mocked(useProduct).mockReturnValue({
-      data: undefined,
-      isLoading: true,
-      error: null,
-      isError: false,
-      isSuccess: false,
-    } as any);
+    vi.mocked(useProduct).mockReturnValue(
+      createMockUseProductResult({
+        data: undefined,
+        isLoading: true,
+        isSuccess: false,
+      })
+    );
 
     // Act: Render the ProductDetail component during loading
     renderWithProviders(<ProductDetail />);
@@ -262,13 +294,13 @@ describe('ProductDetail Component - Behavior Tests', () => {
       brand: undefined,
     };
 
-    vi.mocked(useProduct).mockReturnValue({
-      data: productWithoutBrand,
-      isLoading: false,
-      error: null,
-      isError: false,
-      isSuccess: true,
-    } as any);
+    vi.mocked(useProduct).mockReturnValue(
+      createMockUseProductResult({
+        data: productWithoutBrand,
+        isLoading: false,
+        isSuccess: true,
+      })
+    );
 
     // Act: Render the component
     renderWithProviders(<ProductDetail />);
